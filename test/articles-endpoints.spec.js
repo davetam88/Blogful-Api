@@ -3,24 +3,27 @@ const knex = require('knex')
 const app = require('../src/app')
 
 describe('Articles Endpoints', function () {
-  let db
-  db = knex({
-    client: 'pg',
-    connection: process.env.TEST_DB_URL,
-  })
-  app.set('db', db)
 
 
-  before('make knex instance', () => {
+  // not going in this 
+  before('BEFORE: make knex instance', () => {
+    console.log(`init db`); // dbg..
+    // TEST_DB_URL = "postgresql://dunder_mifflin@localhost/blogful-test"
     db = knex({
       client: 'pg',
       connection: process.env.TEST_DB_URL,
     })
+
     app.set('db', db)
   })
 
-  after('disconnect from db', () => db.destroy())
-  before('clean the table', () => db('blogful_articles').truncate())
+
+  after('AFTER: disconnect from db', () => db.destroy())
+
+  before('BEFORE: clean the table', () => {
+    console.log(`in clean table`); // dbg..
+    db('blogful_articles').truncate()
+  })
 
   context('Given there are articles in the database', () => {
     const testArticles = [
@@ -54,7 +57,8 @@ describe('Articles Endpoints', function () {
       },
     ];
 
-    beforeEach('insert articles', () => {
+    // *** error happen here  ***
+    beforeEach('BEFOREEACH:  insert articles', () => {
       return db
         .into('blogful_articles')
         .insert(testArticles)
