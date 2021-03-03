@@ -81,7 +81,7 @@ describe.only('Articles Endpoints', function () {
 
       return supertest(app)
         .get(`/articles/${articleId}`)
-        .expect(2000, expectedArticle)
+        .expect(200, expectedArticle)
     })
   })
 })
