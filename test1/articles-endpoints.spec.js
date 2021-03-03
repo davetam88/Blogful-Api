@@ -4,10 +4,8 @@ const app = require('../src/app')
 
 describe('Articles Endpoints', function () {
 
-
   // not going in this 
   before('BEFORE: make knex instance', () => {
-    console.log(`init db`); // dbg..
     // TEST_DB_URL = "postgresql://dunder_mifflin@localhost/blogful-test"
     db = knex({
       client: 'pg',
@@ -21,7 +19,6 @@ describe('Articles Endpoints', function () {
   after('AFTER: disconnect from db', () => db.destroy())
 
   before('BEFORE: clean the table', () => {
-    console.log(`in clean table`); // dbg..
     db('blogful_articles').truncate()
   })
 

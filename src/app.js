@@ -16,6 +16,10 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
+app.get('/', (req, res) => {
+  res.send('Hello, world!')
+})
+
 // GET /articles endpoint vai  ArticlesService
 app.get('/articles', (req, res, next) => {
   const knexInstance = req.app.get('db')
@@ -26,12 +30,7 @@ app.get('/articles', (req, res, next) => {
     .catch(next)
 })
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!')
-})
-
 app.use(function errorHandler(error, req, res, next) {
-
   let response
   if (process.env.NODE_ENV === 'production')
   {

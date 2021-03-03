@@ -1,10 +1,7 @@
 const ArticlesService = {
   getAllArticles(db) {
-    console.log(`in getAllArticles`); // dbg..
-
     return db('blogful_articles')
       .select('*');
-
   },
 
   insertArticle(db, data) {
