@@ -1,7 +1,10 @@
 const ArticlesService = {
   getAllArticles(db) {
+    console.log(`in getAllArticles`); // dbg..
+
     return db('blogful_articles')
       .select('*');
+
   },
 
   insertArticle(db, data) {
@@ -35,12 +38,3 @@ module.exports = ArticlesService;
 
 
 
-
-const ArticlesService = {
-  getAllArticles() {
-    return 'all the articles!!'
-  }
-}
-module.exports = ArticlesService
-
-  // << < final solution for dependency cycle : Making knex instance an argument of every method on the service object
