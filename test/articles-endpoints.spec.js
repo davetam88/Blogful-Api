@@ -25,32 +25,43 @@ describe.only('Articles Endpoints', function () {
 
   afterEach('cleanup', () => db('blogful_articles').truncate())
 
-  context('Given there are articles in the database', () => {
-    const testArticles = makeArticlesArray()
+  // get /articles 
+  describe(`GET /articles`, () => {
+    context('Given there are articles in the database', () => {
+      const testArticles = makeArticlesArray()
 
-    // test 1  :  GET /articles all - work
-    beforeEach('BEFOREEACH:  insert articles', () => {
-      return db
-        .into('blogful_articles')
-        .insert(testArticles)
+      beforeEach('GET /articles : insert articles', () => {
+        return db
+          .into('blogful_articles')
+          .insert(testArticles)
+      })
+
+      it('GET /articles : responds with 200 and all of the articles', () => {
+        return supertest(app)
+          .get('/articles')
+          .expect(200, testArticles)
+      })
     })
 
-    // test 2  :  GET /articles all - work
-    it('GET /articles responds with 200 and all of the articles', () => {
-      return supertest(app)
-        .get('/articles')
-        .expect(200, testArticles)
-    })
+    // get /articles with ID
+    describe(`GET /articles/:article_id`, () => {
+      context('Given there are articles in the database', () => {
+        const testArticles = makeArticlesArray()
 
-    // test 3 : get /articles with ID
-    it('GET /articles/:article_id responds with 200 and the specified article', () => {
+        beforeEach('GET /articles(ID) : insert articles', () => {
+          return db
+            .into('blogful_articles')
+            .insert(testArticles)
+        })
 
-      const articleId = 2
-      const expectedArticle = testArticles[articleId - 1]
-
-      return supertest(app)
-        .get(`/articles/${articleId}`)
-        .expect(200, expectedArticle)
+        it('GET /articles(ID) : responds with 200 and the specified article', () => {
+          const articleId = 2
+          const expectedArticle = testArticles[articleId - 1]
+          return supertest(app)
+            .get(`/articles/${articleId}`)
+            .expect(200, expectedArticle)
+        })
+      })
     })
   })
 })
