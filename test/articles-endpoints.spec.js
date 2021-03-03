@@ -1,11 +1,14 @@
+// 18.15 - Now we should have a passing test when running npm test! Let's add an .only to the top level describe block so that we're only running this test file whilst working on it.
+
 const { expect } = require('chai')
 const knex = require('knex')
 const app = require('../src/app')
 
-describe('Articles Endpoints', function () {
 
-  // not going in this 
+describe.only('Articles Endpoints', function () {
+
   before('BEFORE: make knex instance', () => {
+
     // TEST_DB_URL = "postgresql://dunder_mifflin@localhost/blogful-test"
     db = knex({
       client: 'pg',
@@ -21,6 +24,8 @@ describe('Articles Endpoints', function () {
   before('BEFORE: clean the table', () => {
     db('blogful_articles').truncate()
   })
+
+  afterEach('cleanup', () => db('blogful_articles').truncate())
 
   context('Given there are articles in the database', () => {
     const testArticles = [
@@ -54,18 +59,29 @@ describe('Articles Endpoints', function () {
       },
     ];
 
-    // *** error happen here  ***
+    // test 1  :  GET /articles all - work
     beforeEach('BEFOREEACH:  insert articles', () => {
       return db
         .into('blogful_articles')
         .insert(testArticles)
     })
 
+    // test 2  :  GET /articles all - work
     it('GET /articles responds with 200 and all of the articles', () => {
       return supertest(app)
         .get('/articles')
-        .expect(200)
-      // TODO: add more assertions about the body
+        .expect(200, testArticles)
+    })
+
+    // test 3 : get /articles with ID
+    it('GET /articles/:article_id responds with 200 and the specified article', () => {
+
+      const articleId = 2
+      const expectedArticle = testArticles[articleId - 1]
+
+      return supertest(app)
+        .get(`/articles/${articleId}`)
+        .expect(2000, expectedArticle)
     })
   })
 })

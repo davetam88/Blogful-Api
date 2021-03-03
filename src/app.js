@@ -30,6 +30,21 @@ app.get('/articles', (req, res, next) => {
     .catch(next)
 })
 
+app.get('/articles/:article_id', (req, res, next) => {
+  const knexInstance = req.app.get('db')
+  ArticlesService.getById(knexInstance, req.params.article_id)
+    .then(article => {
+      res.json({
+        id: article.id,
+        title: article.title,
+        style: article.style,
+        content: article.content,
+        date_published: new Date(article.date_published),
+      })
+    })
+    .catch(next)
+})
+
 app.use(function errorHandler(error, req, res, next) {
   let response
   if (process.env.NODE_ENV === 'production')
