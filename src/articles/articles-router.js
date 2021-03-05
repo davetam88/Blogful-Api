@@ -18,6 +18,18 @@ articlesRouter
   .post(jsonParser, (req, res, next) => {
     const { title, content, style } = req.body
     const newArticle = { title, content, style }
+
+    // error check for all 3 keys
+    for (const [key, value] of Object.entries(newArticle))
+    {
+      if (value == null)
+      {
+        return res.status(400).json({
+          error: { message: `Missing '${key}' in request body` }
+        })
+      }
+    }
+
     ArticlesService.insertArticle(
       req.app.get('db'),
       newArticle

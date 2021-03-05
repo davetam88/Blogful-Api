@@ -81,7 +81,8 @@ describe.only('Articles Endpoints', function () {
     })
 
     // post section
-    describe(`POST /articles`, () => {
+    // 
+    describe.only(`POST /articles`, () => {
       context('Given Post of an articles to the database', () => {
         it(`creates an article, responding with 201 and the new article`, function () {
           const newArticle = {
@@ -99,12 +100,6 @@ describe.only('Articles Endpoints', function () {
               expect(res.body.content).to.eql(newArticle.content)
               expect(res.body).to.have.property('id')
               expect(res.headers.location).to.eql(`/articles/${res.body.id}`)
-
-              // // const expected = new Date().toLocaleString() - non window vesion
-              // const expected = new Date().toLocaleString('en', { timeZone: 'UTC' })
-              // const actual = new Date(res.body.date_published).toLocaleString()
-              // expect(actual).to.eql(expected)
-
             })
             .then(postRes =>
               supertest(app)
@@ -112,8 +107,30 @@ describe.only('Articles Endpoints', function () {
                 .expect(postRes.body)
             )
         })
+
+        const requiredFields = ['title', 'style', 'content']
+
+        requiredFields.forEach(field => {
+          const newArticle = {
+            title: 'Test new article',
+            style: 'Listicle',
+            content: 'Test new article content...'
+          }
+
+          it(`responds with 400 and an error message when the '${field}' is issing`, () => {
+            delete newArticle[field]
+
+            return supertest(app)
+              .post('/articles')
+              .send(newArticle)
+              .expect(400, {
+                error: { message: `Missing '${field}' in request body` }
+              })
+          })
+        })
+
+
       })
     })
-
   })
 })
