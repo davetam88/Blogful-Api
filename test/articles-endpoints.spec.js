@@ -81,7 +81,7 @@ describe.only('Articles Endpoints', function () {
     })
 
     // post section
-    describe.only(`POST /articles`, () => {
+    describe(`POST /articles`, () => {
       context('Given Post of an articles to the database', () => {
         it(`creates an article, responding with 201 and the new article`, function () {
           const newArticle = {
