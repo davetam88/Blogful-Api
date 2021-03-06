@@ -16,11 +16,17 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
+
 app.use('/articles', articlesRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, world!')
 })
+
+app.get('/xss', (req, res) => {
+  res.cookie('secretToken', '1234567890');
+  res.sendFile(__dirname + '/xss-example.html');
+});
 
 app.use(function errorHandler(error, req, res, next) {
   let response
@@ -37,11 +43,3 @@ app.use(function errorHandler(error, req, res, next) {
 
 module.exports = app
 
-// code 1 
-// res.json({
-//   id: article.id,
-//   title: article.title,
-//   style: article.style,
-//   content: article.content,
-//   date_published: new Date(article.date_published),
-// })
