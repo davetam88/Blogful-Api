@@ -98,7 +98,7 @@ articlesRouter
     {
       return res.status(400).json({
         error: {
-          message: `Request body must contain either 'title', 'style' or content'`
+          message: `Request body must contain either 'title', 'style' or 'content'`
         }
       })
     }
