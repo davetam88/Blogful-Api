@@ -1,6 +1,9 @@
 ## >> Project Name:
 
-Blogful-Api--Express-Mocha--drill
+Blogful-Api
+
+## >> Project Type:
+
 
 
 # Express Boilerplate!

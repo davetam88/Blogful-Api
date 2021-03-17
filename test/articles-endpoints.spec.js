@@ -10,7 +10,8 @@ describe('Articles Endpoints', function () {
 
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL,
+      // was TEST_DB_URL  before heroru
+      connection: process.env.TEST_DATABASE_URL,
     })
     app.set('db', db)
 
